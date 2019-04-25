@@ -1,4 +1,5 @@
 import arcade
+import sys
 import arcade.key
 import random
 import math
@@ -7,11 +8,11 @@ from random import randint
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 PLAYER_DINOS = ["TYRANNOSAURUS REX", "TRICERATOPS", "SAICHANIA", "ISISAURUS"]
-PLAYER_LP = [1800, 1700, 1600, 2000]
+PLAYER_LP = [2000, 1800, 1600, 2200]
 ADV_DINOS = ["DEINONYCHUS", "CRYOLOPHOSAURUS", "THERIZINOSAURUS", "MEGALOSAURUS"]
-ADV_LP = [3700, 4400, 4000, 4200]
+ADV_LP = [4000, 5200, 4200, 4400]
 EXP_DINOS = ["GIGAS", "MAXIMUS", "ARMATUS", "BRONTIKENS"]
-EXP_LP = [4800, 4700, 4600, 5000]
+EXP_LP = [5000, 4800, 4600, 5400]
 options = ["rock", "paper", "scissors"]
 
 
@@ -25,6 +26,10 @@ class Window(arcade.Window):
         self.player_lp = PLAYER_LP[0]
         self.com_name = EXP_DINOS[0]
         self.com_lp = EXP_LP[0]
+        self.win = ''
+        self.rock_choice = ''
+        self.paper_choice = ''
+        self.scissors_choice = ''
 
     def set_up(self):
         self.background = arcade.load_texture("images/bg1.png")
@@ -37,9 +42,53 @@ class Window(arcade.Window):
         self.Tank.draw()
 
         arcade.draw_text(str(self.player_name), self.width - 770, self.height - 30, arcade.color.WHITE, 20)
-        arcade.draw_text(str(PLAYER_LP[0]), self.width - 770, self.height - 55, arcade.color.WHITE, 20)
+        arcade.draw_text(str(self.player_lp), self.width - 770, self.height - 55, arcade.color.WHITE, 20)
         arcade.draw_text(str(self.com_name), self.width - 100, self.height - 30, arcade.color.BLACK, 20)
-        arcade.draw_text(str(EXP_LP[0]), self.width - 100, self.height - 55, arcade.color.BLACK, 20)
+        arcade.draw_text(str(self.com_lp), self.width - 100, self.height - 55, arcade.color.BLACK, 20)
+        arcade.draw_text("PRESS (R)ock, (P)aper and (S)cissors.", 100, 550, arcade.color.YELLOW, 10)
+
+        if self.win == False:
+            arcade.draw_text("YOU LOSE !!", 100, 50, arcade.color.RED, 100)
+        elif self.win == True:
+            arcade.draw_text("YOU WIN !!", 100, 50, arcade.color.RED, 100)
+
+    def on_key_press(self, key, key_modifies):
+        if key == arcade.key.R:
+            options.remove("rock")
+            self.com_ans = random.choice(options)
+            if self.com_ans == "paper":
+                self.player_lp -= 200
+                if self.player_lp <= 0:
+                    self.win = False
+            elif self.com_ans == "scissors":
+                self.com_lp -= 200
+                if self.com_lp <= 0:
+                    self.win = True
+            options.append("rock")
+        elif key == arcade.key.P:
+            options.remove("paper")
+            self.com_ans = random.choice(options)
+            if self.com_ans == "rock":
+                self.com_lp -= 200
+                if self.com_lp <= 0:
+                    self.win = True
+            elif self.com_ans == "scissors":
+                self.player_lp -= 200
+                if self.player_lp <= 0:
+                    self.win = False
+            options.append("paper")
+        elif key == arcade.key.S:
+            options.remove("scissors")
+            self.com_ans = random.choice(options)
+            if self.com_ans == "rock":
+                self.player_lp -= 200
+                if self.player_lp <= 0:
+                    self.win = False
+            elif self.com_ans == "paper":
+                self.com_lp -= 200
+                if self.com_lp <= 0:
+                    self.win = True
+            options.append("scissors")
 
 
 class DinoModel(arcade.Sprite):
@@ -48,72 +97,6 @@ class DinoModel(arcade.Sprite):
 
     def draw(self):
         super().draw()
-
-
-class judgement():
-    def __init__(self):
-        self.answer = answer
-        self.com_ans = com_ans
-
-    def on_key_press(self):
-        if arcade.key.R:
-            options.remove(options[0])
-            self.com_ans = random.choice(options)
-            if self.com_ans == "paper":
-                return False
-            elif self.com_ans == "scissors":
-                return True
-            options.append(options[0])
-        elif arcade.key.P:
-            self.answer = options[1]
-            options.remove(options[1])
-            self.com_ans = random.choice(options)
-            if self.com_ans == "rock":
-                return True
-            elif self.com_ans == "scissors":
-                return False
-            options.append(options[1])
-        elif arcade.key.S:
-            self.answer = options[2]
-            options.remove(options[2])
-            self.com_ans = random.choice(options)
-            if self.com_ans == "rock":
-                return False
-            elif self.com_ans == "paper":
-                return True
-            options.append(options[2])
-
-    # def rps_judge(self):
-    #     if self.answer == options[0]:
-    #         options.remove(options[0])
-    #         self.com_ans = random.choice(options)
-    #         if self.com_ans == options[1]:
-    #             return False
-    #         elif self.com_ans == options[2]:
-    #             return True
-    #         options.append(options[0])
-    #     elif self.answer == options[1]:
-    #         options.remove(options[1])
-    #         self.com_ans = random.choice(options)
-    #         if self.com_ans == options[0]:
-    #             return True
-    #         elif self.com_ans == options[2]:
-    #             return False
-    #         options.append(options[1])
-    #     elif self.answer == options[2]:
-    #         options.remove(options[2])
-    #         self.com_ans = random.choice(options)
-    #         if self.com_ans == options[0]:
-    #             return False
-    #         elif self.com_ans == options[1]:
-    #             return True
-    #         options.append(options[2])
-
-    def update(self):
-        if self.on_key_press() == False:
-            PLAYER_LP[0] -= 200
-        elif self.on_key_press() == True:
-            EXP_LP[0] -= 200
 
 
 if __name__ == '__main__':
