@@ -22,16 +22,31 @@ class Window(arcade.Window):
         super().__init__(width, height)
         self.background = None
         self.player_pic = DinoModel(filename="images/Terry.png", center_x=width//4, center_y=height//2)
-        self.com_pic = DinoModel(filename="images/Armatus.png", center_x=width//1.3, center_y=height//2)
+        self.com_pic = DinoModel(filename="images/Gigas.png", center_x=width//1.3, center_y=height//2)
+        self.rock = DinoModel(filename="images/rock.png", center_x=width//4, center_y=height//5)
+        self.paper = DinoModel(filename="images/paper.png", center_x=width//4, center_y=height//5)
+        self.scissors = DinoModel(filename="images/scissors.png", center_x=width//4, center_y=height//5)
+        self.com_rock = DinoModel(filename="images/rock.png", center_x=width//1.3, center_y=height//5)
+        self.com_paper = DinoModel(filename="images/paper.png", center_x=width//1.3, center_y=height//5)
+        self.com_scissors = DinoModel(filename="images/scissors.png", center_x=width//1.3, center_y=height//5)
+        self.craw = DinoModel(filename="images/craw2.png", center_x=width//4, center_y=height//2)
+        self.com_craw = DinoModel(filename="images/craw2.png", center_x=width//1.3, center_y=height//2)
         self.player_name = PLAYER_DINOS[2]
         self.player_lp = PLAYER_LP[2]
-        self.com_name = COM_DINOS[4]
-        self.com_lp = COM_LP[4]
+        self.com_name = COM_DINOS[6]
+        self.com_lp = COM_LP[6]
         self.win = ''
-        self.clan = ''
+        self.is_rock = ''
+        self.is_paper = ''
+        self.is_scissors = ''
+        self.com_is_rock = ''
+        self.com_is_paper = ''
+        self.com_is_scissors = ''
+        self.is_craw = ''
+        self.is_com_craw =''
 
     def set_up(self):
-        self.background = arcade.load_texture("images/bg1.png")
+        self.background = arcade.load_texture("images/volcano.jpg")
 
     def on_draw(self):
         arcade.start_render()
@@ -46,6 +61,25 @@ class Window(arcade.Window):
         arcade.draw_text(str(self.com_name), self.width - 100, self.height - 30, arcade.color.BLACK, 20)
         arcade.draw_text(str(self.com_lp), self.width - 100, self.height - 55, arcade.color.BLACK, 20)
 
+        if self.is_rock:
+            self.rock.draw()
+        if self.is_paper:
+            self.paper.draw()
+        if self.is_scissors:
+            self.scissors.draw()
+
+        if self.com_is_rock:
+            self.com_rock.draw()
+        if self.com_is_paper:
+            self.com_paper.draw()
+        if self.com_is_scissors:
+            self.com_scissors.draw()
+
+        if self.is_com_craw:
+            self.com_craw.draw()
+        if self.is_craw:
+            self.craw.draw()
+
         arcade.draw_text("PRESS (R)ock, (P)aper and (S)cissors.", 100, 550, arcade.color.YELLOW, 10)
 
         if self.win == False:
@@ -55,37 +89,76 @@ class Window(arcade.Window):
 
     def on_key_press(self, key, key_modifies):
         if key == arcade.key.R:
+            self.is_rock = True
+            self.is_paper = False
+            self.is_scissors = False
             options.remove("rock")
             self.com_ans = random.choice(options)
             if self.com_ans == "paper":
+                self.is_craw = True
+                self.is_com_craw = False
+                self.com_is_rock = False
+                self.com_is_paper = True
+                self.com_is_scissors = False
                 self.player_lp -= 200
                 if self.player_lp <= 0:
                     self.win = False
             elif self.com_ans == "scissors":
+                self.is_craw = False
+                self.is_com_craw = True
+                self.com_is_rock = False
+                self.com_is_paper = False
+                self.com_is_scissors = True
                 self.com_lp -= 200
                 if self.com_lp <= 0:
                     self.win = True
             options.append("rock")
         elif key == arcade.key.P:
+            self.is_rock = False
+            self.is_paper = True
+            self.is_scissors = False
             options.remove("paper")
             self.com_ans = random.choice(options)
             if self.com_ans == "rock":
+                self.is_craw = False
+                self.is_com_craw = True
+                self.com_is_rock = True
+                self.com_is_paper = False
+                self.com_is_scissors = False
                 self.com_lp -= 200
                 if self.com_lp <= 0:
                     self.win = True
             elif self.com_ans == "scissors":
+                self.is_craw = True
+                self.is_com_craw = False
+                self.com_is_rock = False
+                self.com_is_paper = False
+                self.com_is_scissors = True
                 self.player_lp -= 200
                 if self.player_lp <= 0:
                     self.win = False
             options.append("paper")
         elif key == arcade.key.S:
+            self.is_rock = False
+            self.is_paper = False
+            self.is_scissors = True
             options.remove("scissors")
             self.com_ans = random.choice(options)
             if self.com_ans == "rock":
+                self.is_craw = True
+                self.is_com_craw = False
+                self.com_is_rock = True
+                self.com_is_paper = False
+                self.com_is_scissors = False
                 self.player_lp -= 200
                 if self.player_lp <= 0:
                     self.win = False
             elif self.com_ans == "paper":
+                self.is_craw = False
+                self.is_com_craw = True
+                self.com_is_rock = False
+                self.com_is_paper = True
+                self.com_is_scissors = False
                 self.com_lp -= 200
                 if self.com_lp <= 0:
                     self.win = True
