@@ -10,7 +10,7 @@ SCREEN_HEIGHT = 600
 
 PLAYER_DINOS = ["ANKYLOSAURUS", "STYRACOSAURUS", "TYRANNOSAURUS REX", "AMPELOSAURUS"]
 PLAYER_LP = [1600, 1800, 2000, 2200]
-COM_DINOS = ["STEGOSAURUS", "NEDOCERATOPS", "AMPELOSAURUS", "BLACK T-REX",
+COM_DINOS = ["STEGOSAURUS", "NEDOCERATOPS", "JOBARIA", "SAUROPHAGANAX",
          "ARMATUS", "MAXIMUS", "GIGAS", "CRYOLOPHOSAURUS", "BRONTIKENS"]
 COM_LP = [1600, 1800, 2200, 2500, 3400, 3600, 3800, 4000, 4200]
 
@@ -22,11 +22,11 @@ class Window(arcade.Window):
         super().__init__(width, height)
         self.background = None
         self.player_pic = DinoModel(filename="images/Terry.png", center_x=width//4, center_y=height//2)
-        self.com_pic = DinoModel(filename="images/Gigas.png", center_x=width//1.3, center_y=height//2)
+        self.com_pic = DinoModel(filename="images/Armatus.png", center_x=width//1.3, center_y=height//2)
         self.player_name = PLAYER_DINOS[2]
         self.player_lp = PLAYER_LP[2]
-        self.com_name = COM_DINOS[6]
-        self.com_lp = COM_LP[6]
+        self.com_name = COM_DINOS[4]
+        self.com_lp = COM_LP[4]
         self.win = ''
         self.clan = ''
 
