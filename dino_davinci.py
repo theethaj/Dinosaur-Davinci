@@ -24,6 +24,9 @@ player_menu = ["images/l-ank.png", "images/l-sty.png", "images/l-tyr.png", "imag
 com_menu = ["images/l-ste.png", "images/l-ned.png", "images/l-job.png", "images/l-acr.png", "images/l-arm.png",
             "images/l-max.png", "images/l-gig.png", "images/l-cry.png", "images/l-bro.png"]
 
+m = random.randrange(0,4)
+x = random.randrange(0,9)
+
 
 class Window(arcade.Window):
     def __init__(self, width, height):
@@ -31,11 +34,11 @@ class Window(arcade.Window):
 
         self.background = None
 
-        self.player_menu = DinoModel(filename=player_menu[2], center_x=width//2.7, center_y=height//1.075)
-        self.com_menu = DinoModel(filename=com_menu[8], center_x=width//1.79, center_y=height//1.075)
+        self.player_menu = DinoModel(filename=player_menu[m], center_x=width//2.7, center_y=height//1.075)
+        self.com_menu = DinoModel(filename=com_menu[x], center_x=width//1.79, center_y=height//1.075)
 
-        self.player_pic = DinoModel(filename=player_dinos[2], center_x=width//4.3, center_y=height//2)
-        self.com_pic = DinoModel(filename=com_dinos[8], center_x=width//1.25, center_y=height//2)
+        self.player_pic = DinoModel(filename=player_dinos[m], center_x=width//4.3, center_y=height//2)
+        self.com_pic = DinoModel(filename=com_dinos[x], center_x=width//1.25, center_y=height//2)
 
         self.rock = DinoModel(filename="images/rock.png", center_x=width//4.3, center_y=height//5)
         self.paper = DinoModel(filename="images/paper.png", center_x=width//4.3, center_y=height//5)
@@ -48,11 +51,35 @@ class Window(arcade.Window):
         self.craw = DinoModel(filename="images/craw2.png", center_x=width//4.3, center_y=height//2)
         self.com_craw = DinoModel(filename="images/craw2.png", center_x=width//1.25, center_y=height//2)
 
-        self.player_name = PLAYER_DINOS[2]
-        self.player_lp = PLAYER_LP[2]
+        self.player_weak = DinoModel(filename="images/weak.png", center_x=width//2.7, center_y=height//1.175)
+        self.com_weak = DinoModel(filename="images/weak.png", center_x=width//1.79, center_y=height//1.175)
 
-        self.com_name = COM_DINOS[8]
-        self.com_lp = COM_LP[8]
+        self.player_name = PLAYER_DINOS[m]
+        self.player_lp = PLAYER_LP[m]
+
+        self.com_name = COM_DINOS[x]
+        self.com_lp = COM_LP[x]
+
+        self.weak_for = ''
+        self.weak_against = ''
+
+        if m == 0 and (x == 3 or x == 6):
+            self.weak_for = True
+        elif m == 1 and (x == 0 or x == 4):
+            self.weak_for = True
+        elif m == 2 and (x == 2 or x == 8):
+            self.weak_for = True
+        elif m == 3 and (x == 1 or x == 5):
+            self.weak_for = True
+
+        if m == 0 and (x == 1 or x == 5 or x == 7):
+            self.weak_against = True
+        elif m == 1 and (x == 2 or x == 7 or x == 8):
+            self.weak_against = True
+        elif m == 2 and (x == 0 or x == 4 or x == 7):
+            self.weak_against = True
+        elif m == 3 and (x == 3 or x == 6 or x == 7):
+            self.weak_against = True
 
         self.win = ''
 
@@ -109,6 +136,11 @@ class Window(arcade.Window):
         if self.is_craw:
             self.craw.draw()
 
+        if self.weak_for:
+            self.com_weak.draw()
+        if self.weak_against:
+            self.player_weak.draw()
+
         # arcade.draw_text("PRESS (R)ock, (P)aper and (S)cissors.", 300, 500, arcade.color.YELLOW, 10)
 
         if self.win == False:
@@ -129,8 +161,12 @@ class Window(arcade.Window):
                 self.com_is_rock = False
                 self.com_is_paper = True
                 self.com_is_scissors = False
-                self.player_lp -= 200
+                if self.weak_against == True:
+                    self.player_lp -= 400
+                else:
+                    self.player_lp -= 200
                 if self.player_lp <= 0:
+                    self.player_lp = 0
                     self.win = False
             elif self.com_ans == "scissors":
                 self.is_craw = False
@@ -138,8 +174,12 @@ class Window(arcade.Window):
                 self.com_is_rock = False
                 self.com_is_paper = False
                 self.com_is_scissors = True
-                self.com_lp -= 200
+                if self.weak_for == True:
+                    self.com_lp -= 400
+                else:
+                    self.com_lp -= 200
                 if self.com_lp <= 0:
+                    self.com_lp = 0
                     self.win = True
             options.append("rock")
         elif key == arcade.key.P:
@@ -154,8 +194,12 @@ class Window(arcade.Window):
                 self.com_is_rock = True
                 self.com_is_paper = False
                 self.com_is_scissors = False
-                self.com_lp -= 200
+                if self.weak_for == True:
+                    self.com_lp -= 400
+                else:
+                    self.com_lp -= 200
                 if self.com_lp <= 0:
+                    self.com_lp = 0
                     self.win = True
             elif self.com_ans == "scissors":
                 self.is_craw = True
@@ -163,8 +207,12 @@ class Window(arcade.Window):
                 self.com_is_rock = False
                 self.com_is_paper = False
                 self.com_is_scissors = True
-                self.player_lp -= 200
+                if self.weak_against == True:
+                    self.player_lp -= 400
+                else:
+                    self.player_lp -= 200
                 if self.player_lp <= 0:
+                    self.player_lp = 0
                     self.win = False
             options.append("paper")
         elif key == arcade.key.S:
@@ -179,8 +227,12 @@ class Window(arcade.Window):
                 self.com_is_rock = True
                 self.com_is_paper = False
                 self.com_is_scissors = False
-                self.player_lp -= 200
+                if self.weak_against == True:
+                    self.player_lp -= 400
+                else:
+                    self.player_lp -= 200
                 if self.player_lp <= 0:
+                    self.player_lp = 0
                     self.win = False
             elif self.com_ans == "paper":
                 self.is_craw = False
@@ -188,8 +240,12 @@ class Window(arcade.Window):
                 self.com_is_rock = False
                 self.com_is_paper = True
                 self.com_is_scissors = False
-                self.com_lp -= 200
+                if self.weak_for == True:
+                    self.com_lp -= 400
+                else:
+                    self.com_lp -= 200
                 if self.com_lp <= 0:
+                    self.com_lp = 0
                     self.win = True
             options.append("scissors")
 
