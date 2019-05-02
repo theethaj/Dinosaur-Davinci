@@ -10,40 +10,55 @@ SCREEN_HEIGHT = 600
 
 PLAYER_DINOS = ["ANKYLOSAURUS", "STYRACOSAURUS", "TYRANNOSAURUS REX", "AMPELOSAURUS"]
 PLAYER_LP = [1600, 1800, 2000, 2200]
-COM_DINOS = ["STEGOSAURUS", "NEDOCERATOPS", "JOBARIA", "SAUROPHAGANAX",
+COM_DINOS = ["STEGOSAURUS", "NEDOCERATOPS", "JOBARIA", "ACROCANTHOSAURUS",
          "ARMATUS", "MAXIMUS", "GIGAS", "CRYOLOPHOSAURUS", "BRONTIKENS"]
-COM_LP = [1600, 1800, 2200, 2500, 3400, 3600, 3800, 4000, 4200]
+COM_LP = [1600, 1800, 2200, 2600, 3400, 3600, 3800, 4000, 4200]
 
 options = ["rock", "paper", "scissors"]
+
+player_dinos = ["images/Ankylosaurus.png", "images/Styracosaurus.png", "images/Terry.png", "images/Ampelosaurus.png"]
+com_dinos = ["images/Stegosaurus.png", "images/Diceratops.png", "images/Jobaria.png", "images/acrocantho.png",
+             "images/Armatus.png", "images/Maximus.png", "images/Gigas.png", "images/Cry.png", "images/Brontikens.png"]
 
 
 class Window(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
+
         self.background = None
-        self.player_pic = DinoModel(filename="images/Terry.png", center_x=width//4, center_y=height//2)
-        self.com_pic = DinoModel(filename="images/Gigas.png", center_x=width//1.3, center_y=height//2)
-        self.rock = DinoModel(filename="images/rock.png", center_x=width//4, center_y=height//5)
-        self.paper = DinoModel(filename="images/paper.png", center_x=width//4, center_y=height//5)
-        self.scissors = DinoModel(filename="images/scissors.png", center_x=width//4, center_y=height//5)
-        self.com_rock = DinoModel(filename="images/rock.png", center_x=width//1.3, center_y=height//5)
-        self.com_paper = DinoModel(filename="images/paper.png", center_x=width//1.3, center_y=height//5)
-        self.com_scissors = DinoModel(filename="images/scissors.png", center_x=width//1.3, center_y=height//5)
-        self.craw = DinoModel(filename="images/craw2.png", center_x=width//4, center_y=height//2)
-        self.com_craw = DinoModel(filename="images/craw2.png", center_x=width//1.3, center_y=height//2)
+
+        self.player_pic = DinoModel(filename=player_dinos[2], center_x=width//4.3, center_y=height//2)
+        self.com_pic = DinoModel(filename=com_dinos[2], center_x=width//1.25, center_y=height//2)
+
+        self.rock = DinoModel(filename="images/rock.png", center_x=width//4.3, center_y=height//5)
+        self.paper = DinoModel(filename="images/paper.png", center_x=width//4.3, center_y=height//5)
+        self.scissors = DinoModel(filename="images/scissors.png", center_x=width//4.3, center_y=height//5)
+
+        self.com_rock = DinoModel(filename="images/rock.png", center_x=width//1.25, center_y=height//5)
+        self.com_paper = DinoModel(filename="images/paper.png", center_x=width//1.25, center_y=height//5)
+        self.com_scissors = DinoModel(filename="images/scissors.png", center_x=width//1.25, center_y=height//5)
+
+        self.craw = DinoModel(filename="images/craw2.png", center_x=width//4.3, center_y=height//2)
+        self.com_craw = DinoModel(filename="images/craw2.png", center_x=width//1.25, center_y=height//2)
+
         self.player_name = PLAYER_DINOS[2]
         self.player_lp = PLAYER_LP[2]
-        self.com_name = COM_DINOS[6]
-        self.com_lp = COM_LP[6]
+
+        self.com_name = COM_DINOS[2]
+        self.com_lp = COM_LP[2]
+
         self.win = ''
+
         self.is_rock = ''
         self.is_paper = ''
         self.is_scissors = ''
+
         self.com_is_rock = ''
         self.com_is_paper = ''
         self.com_is_scissors = ''
+
         self.is_craw = ''
-        self.is_com_craw =''
+        self.is_com_craw = ''
 
     def set_up(self):
         self.background = arcade.load_texture("images/volcano.jpg")
@@ -55,8 +70,8 @@ class Window(arcade.Window):
         self.player_pic.draw()
         self.com_pic.draw()
 
-        arcade.draw_text(str(self.player_name), self.width - 770, self.height - 30, arcade.color.WHITE, 20)
-        arcade.draw_text(str(self.player_lp), self.width - 770, self.height - 55, arcade.color.WHITE, 20)
+        arcade.draw_text(str(self.player_name), self.width - 770, self.height - 30, arcade.color.BLACK, 20)
+        arcade.draw_text(str(self.player_lp), self.width - 770, self.height - 55, arcade.color.BLACK, 20)
 
         arcade.draw_text(str(self.com_name), self.width - 100, self.height - 30, arcade.color.BLACK, 20)
         arcade.draw_text(str(self.com_lp), self.width - 100, self.height - 55, arcade.color.BLACK, 20)
@@ -83,9 +98,9 @@ class Window(arcade.Window):
         arcade.draw_text("PRESS (R)ock, (P)aper and (S)cissors.", 100, 550, arcade.color.YELLOW, 10)
 
         if self.win == False:
-            arcade.draw_text("YOU LOSE !!", 300, 550, arcade.color.YELLOW, 40)
+            arcade.draw_text("YOU LOSE !!", 300, 550, arcade.color.RED, 40)
         elif self.win == True:
-            arcade.draw_text("YOU WIN !!", 300, 550, arcade.color.YELLOW, 40)
+            arcade.draw_text("YOU WIN !!", 300, 550, arcade.color.GREEN, 40)
 
     def on_key_press(self, key, key_modifies):
         if key == arcade.key.R:
