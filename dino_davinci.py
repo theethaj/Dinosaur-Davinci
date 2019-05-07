@@ -170,8 +170,6 @@ class Window:
             if self.weak_against:
                 self.player_weak.draw()
 
-            # arcade.draw_text("PRESS (R)ock, (P)aper and (S)cissors.", 300, 500, arcade.color.YELLOW, 10)
-
             if self.win == False:
                 self.game.draw()
             elif self.win == True:
